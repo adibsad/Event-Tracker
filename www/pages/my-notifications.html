@@ -1,0 +1,77 @@
+<template>
+  <div class="page">
+  <div class="navbar">
+    <div class="navbar-inner sliding">
+      <div class="left">
+        <a href="#" class="link back">
+          <i class="icon icon-back md-only"></i>
+          <i class="f7-icons ios-only">chevron_left</i>
+          <span class="white">Back</span>
+        </a>
+      </div>
+      <div class="title">Notifications</div>
+    </div>
+  </div>
+
+  <div class="page-content">
+    <div class="block-title">My Notifications</div>
+
+    {{#each notifications}}
+
+    <div style="border-radius: 12px" class="card">
+      <div class="card-header"><b>{{title}}</b>
+          <div class="float-right notification-title-right-text">{{datenow}}</div>
+          <div id="{{@index}}" class="notification-close-button delete-note"></div>
+        </div>
+      <div class="card-content card-content-padding">{{text}}</div>
+    </div>
+
+    {{/each}}
+
+
+      </div>
+  </div>
+</template>
+<script>
+  return {
+    data: function() {
+      return {
+        notifications: app.user.notifications[0]
+      }
+    },
+    on: {
+      pageInit: function () {
+      // delete from page and slide everything up
+      $$('.delete-note').on('click', function(e) {
+        var cardToDelete = $$(this.offsetParent.offsetParent);
+        cardToDelete.addClass('animated fadeOut');
+
+        setTimeout(function() {
+          cardToDelete .nextAll().addClass("animated slideInUp");
+          cardToDelete.html('');
+        }, 250);
+
+        setTimeout(function() {
+          cardToDelete .nextAll().removeClass("animated slideInUp");
+        }, 1000);
+
+
+        // delete from app.user.events arrays and flag in database
+        var noteKey = app.user.notifications[1][this.id];
+        var eventKey = app.user.notifications[0][this.id].myeventkey;
+
+        // need to add this flag to the event node in my events
+        db.ref('myevents/' + app.user.uid + '/' + eventKey + '/'+ noteKey).set('deleted');
+
+        // console.log(app.user.notifications[0][this.id]);
+        app.user.notifications[0].splice(this.id, 1);
+        app.user.notifications[1].splice(this.id, 1);
+        setNotificationsCount();
+
+        })
+
+      }
+
+      },
+    }
+</script>

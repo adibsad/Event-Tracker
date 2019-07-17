@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en" class="with-statusbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#2196f3">
+  <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap:">
+  <title>NEST+m Event Tracker</title>
+  <link rel="stylesheet" href="css/animate.css">
+  <link rel="stylesheet" href="node_modules\framework7\css\framework7.min.css">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <div id="app" class="color-theme-gray">
+
+    <div class="statusbar purple"></div>
+
+    <!-- Left Panel with Reveal Effect -->
+    <div class="panel panel-left panel-cover theme-dark">
+      <div class="page">
+        <div class="page-content">
+
+          <div class="block-title">MAIN MENU</div>
+          <div class="list links-list">
+            <ul>
+              <li>
+                <a href="/setting/" class="panel-close">Filter</a>
+              </li>
+              <li>
+                <a href="/profile/" class="panel-close">Profile</a>
+              </li>
+              <li>
+                <a href="/myevents/" class="panel-close">My Events</a>
+              </li>
+              <li>
+                <a href="/mynotifications/" class="panel-close">My Notifications<span id="numberNotifications"></span></a>
+              </li>
+              <li>
+                <a href="/admin/" class="panel-close">Admin</a>
+              </li>
+              <li>
+                <a href="/about/" class="panel-close">About</a>
+              </li>
+              <li>
+                <a href="#" onclick="confirmOk()" class="panel-close">Logout</a>
+              </li>
+            </ul>
+              <div id="overlay-menu-picture" class="center">
+                <img src="img/logo_sm.png" />
+              </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- Left Panel End -->
+
+    <!--Init Main View-->
+    <div class="view view-main view-init ios-edges" data-url="/">
+      <div class="page" data-name="/">
+        <div class="navbar purple">
+          <div class="navbar-inner purple">
+            <div class="left">
+              <a href="#" class="link icon-only panel-open" data-panel="left">
+                <i class="icon f7-icons ios-only">menu</i>
+                <i class="icon material-icons md-only">menu</i>
+              </a>
+            </div>
+            <div class="title sliding">NEST+m Event Tracker</div>
+            <div class="right">
+              <a class="link icon-only searchbar-enable" data-searchbar=".searchbar-components">
+                <i class="icon f7-icons ios-only">search_strong</i>
+                <i class="icon material-icons md-only">search</i>
+              </a>
+            </div>
+
+
+            <form data-search-container=".components-list" data-search-in="a" class="searchbar searchbar-expandable searchbar-components searchbar-1">
+              <div class="searchbar-inner">
+                <div class="searchbar-input-wrap">
+                  <input type="search" placeholder="Search events" />
+                  <i class="searchbar-icon"></i>
+                  <span class="input-clear-button"></span>
+                </div>
+                <span class="searchbar-disable-button">Cancel</span>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="page-content">
+          <div id="eventsID"></div>
+          <div class="list simple-list searchbar-not-found">
+            <ul>
+              <li>Nothing found</li>
+            </ul>
+          </div>
+      </div>
+    </div>
+    <!-- End Main View -->
+
+    <!-- Login Page -->
+    <div class="login-screen login">
+      <div class="page no-toolbar no-navbar no-swipeback app-login">
+        <div class="page-content login-screen-content">
+          <img src="img/logo.png" class="center"/>
+          <div class="login-screen-title animated fadeInRight">Event Tracker</div>
+
+          <form class="animated fadeInUp">
+            <div class="list inset">
+              <ul class="center">
+                <li class="item-content item-input">
+                  <div class="item-media"><i class="icon f7-icons size-18">email</i></div>
+                  <div class="item-inner">
+                    <div class="item-input-wrap">
+                      <input type="text" id="email" name="username" placeholder="Email" />
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="list inset">
+              <ul>
+                <li class="item-content item-input">
+                  <div class="item-media"><i class="icon f7-icons size-18">lock</i></div>
+                  <div class="item-inner">
+                    <div class="item-input-wrap">
+                      <input type="password" id="password" name="password" placeholder="Password" />
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="block inset">
+              <p><a href="#" onclick="toggleSignIn()" class="item-link m-5 button button-big color-white button-outline">Login</a></p>
+            </div>
+            <div class="t-center">
+              <p><a class="center-white" onclick="sendPasswordReset();" href="#">Forgot Password?</a></p>
+            </div>
+            <div class="list">
+              <div class="t-center">
+                <a  class="link popup-open center-white" href="#" data-popup=".signup">No account? <strong> &nbsp;Sign Up</strong></a></p>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+    <!--End Login Page-->
+
+    <!-- Create Account Screen -->
+    <div class="popup signup">
+      <div class="page no-toolbar no-navbar no-swipeback">
+        <div class="page-content login-screen-content">
+          <img src="img/logo.png" class="center popup-img" />
+          <div class="login-screen-title animated fadeInRight">Create Account</div>
+          <form class="animated fadeInUp">
+            <div class="list inset">
+              <ul style="" class="center">
+                <li class="item-content item-input">
+                  <div class="item-media"><i class="icon f7-icons size-18">person</i></div>
+                  <div class="item-inner">
+                    <div class="item-input-wrap">
+                      <input type="text" id="new-name" placeholder="Name" />
+                      <span class="input-clear-button"></span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="list inset">
+              <ul class="center">
+                <li class="item-content item-input">
+                  <div class="item-media"><i class="icon f7-icons size-18">email</i></div>
+                  <div class="item-inner">
+                    <div class="item-input-wrap">
+                      <input type="text" id="new-email" placeholder="Email" />
+                      <span class="input-clear-button"></span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="list inset">
+              <ul>
+                <li class="item-content item-input">
+                  <div class="item-media"><i class="icon f7-icons size-18">lock</i></div>
+                  <div class="item-inner">
+                    <div class="item-input-wrap">
+                      <input type="password" id="new-password" placeholder="Password" />
+                      <span class="input-clear-button"></span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="list inset">
+              <ul>
+                <li class="item-content item-input">
+                  <div class="item-media"><i class="icon f7-icons size-18">lock</i></div>
+                  <div class="item-inner">
+                    <div class="item-input-wrap">
+                      <input type="password" id="confirm-password" placeholder="Confirm Password" />
+                      <span class="input-clear-button"></span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="block inset">
+              <p><a href="#" onclick="handleSignUp()" class="item-link m-5 button button-big color-white button-outline">Create Account</a></p>
+            </div>
+
+            <div class="list">
+              <div class="t-center">
+                <a href="#" class="link popup-close center-white">Cancel</a></p>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+    <!--End of Create Account Screen-->
+
+    <!--Authorization Screen-->
+    <div class="popup authorization-screen">
+      <div class="page no-navbar no-toolbar no-swipeback">
+        <div class="page-content login-screen-content layout-white">
+          <img src="img/logo.png" class="center popup-img"  />
+          <div class="login-screen-title animated fadeInRight">Account Authorization</div>
+
+          <div class="block inset animated fadeInUp">
+              <div class="lg-text">
+              <p>Please check your email and verify your email address to continue.</p>
+            </div>
+
+            <p><a href="#" onclick="continueIndex();" class="item-link m-5 popup-close button button-big color-white button-outline">Continue</a></p>
+            <p><a href="#" onclick="sendEmailVerification()" class="item-link m-5 button button-big color-white button-outline">Resend Authorization Link</a></p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--End Authorization Screen-->
+
+  </div>
+
+
+
+
+  <!--Firebase-->
+  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-app.js"></script>
+
+  <!-- Add Firebase products that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-database.js"></script>
+
+  <!--Framework7-->
+  <script src="node_modules\framework7\js\framework7.min.js"></script>
+
+
+  <script src="js/routes.js"></script>
+  <script src="js/app.js"></script>
+
+  <script src="js/auth.js"></script>
+  <script src="js/clubs.js"></script>
+  <script src="js/events.js"></script>
+  <script src="js/notifications.js"></script>
+
+  <script src="js/moment.js"></script>
+
+
+
+</body>
+
+</html>
